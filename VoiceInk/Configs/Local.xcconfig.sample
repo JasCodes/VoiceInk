@@ -1,0 +1,11 @@
+// Local Configuration Sample
+// Copy this file to 'Local.xcconfig' and configure your values.
+// Local.xcconfig is gitignored to keep your secrets private.
+
+// 1. Organization Prefix (Reverse Domain Name)
+// Used for Bundle Identifier: $(APP_ORG_PREFIX).VoiceInk
+APP_ORG_PREFIX = com.example
+
+// 2. Apple Development Team ID
+// Check your Keychain or Apple Developer Account
+APP_DEVELOPMENT_TEAM = XXXXXXXXXX

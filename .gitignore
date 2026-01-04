@@ -100,5 +100,8 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
+# Local xcconfig
+VoiceInk/Configs/Local.xcconfig
+
 # Logs
 *.log

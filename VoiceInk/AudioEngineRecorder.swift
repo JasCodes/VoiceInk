@@ -5,7 +5,7 @@ import os
 
 @MainActor
 class AudioEngineRecorder: ObservableObject {
-    private let logger = Logger(subsystem: "com.prakashjoshipax.voiceink", category: "AudioEngineRecorder")
+    private let logger = Logger(subsystem: AppBuildInfo.subsystem, category: "AudioEngineRecorder")
 
     private var audioEngine: AVAudioEngine?
     private var inputNode: AVAudioInputNode?
@@ -23,7 +23,7 @@ class AudioEngineRecorder: ObservableObject {
     private let tapBufferSize: AVAudioFrameCount = 4096
     private let tapBusNumber: AVAudioNodeBus = 0
 
-    private let audioProcessingQueue = DispatchQueue(label: "com.prakashjoshipax.VoiceInk.audioProcessing", qos: .userInitiated)
+    private let audioProcessingQueue = DispatchQueue(label: "\(AppBuildInfo.subsystem).audioProcessing", qos: .userInitiated)
     private let fileWriteLock = NSLock()
 
     var onRecordingError: ((Error) -> Void)?
