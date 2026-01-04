@@ -2,25 +2,16 @@ import SwiftUI
 import AppKit
 
 struct DashboardPromotionsSection: View {
-    let licenseState: LicenseViewModel.LicenseState
+    // License logic removed
+    
     @State private var isAffiliatePromotionDismissed: Bool = UserDefaults.standard.affiliatePromotionDismissed
 
     private var shouldShowUpgradePromotion: Bool {
-        switch licenseState {
-        case .trial(let daysRemaining):
-            return daysRemaining <= 3
-        case .trialExpired:
-            return true
-        case .licensed:
-            return false
-        }
+        return false // Never show upgrade promotion
     }
 
     private var shouldShowAffiliatePromotion: Bool {
-        if case .licensed = licenseState {
-            return !isAffiliatePromotionDismissed
-        }
-        return false
+        return !isAffiliatePromotionDismissed
     }
     
     private var shouldShowPromotions: Bool {
@@ -30,19 +21,7 @@ struct DashboardPromotionsSection: View {
     var body: some View {
         if shouldShowPromotions {
             HStack(alignment: .top, spacing: 18) {
-                if shouldShowUpgradePromotion {
-                    DashboardPromotionCard(
-                        badge: "30% OFF",
-                        title: "Unlock VoiceInk Pro For Less",
-                        message: "Share VoiceInk on your socials, and instantly unlock a 30% discount on VoiceInk Pro.",
-                        accentSymbol: "megaphone.fill",
-                        glowColor: Color(red: 0.08, green: 0.48, blue: 0.85),
-                        actionTitle: "Share & Unlock",
-                        actionIcon: "arrow.up.right",
-                        action: openSocialShare
-                    )
-                    .frame(maxWidth: .infinity)
-                }
+                // Upgrade promotion block removed/disabled
                 
                 if shouldShowAffiliatePromotion {
                     DashboardPromotionCard(
