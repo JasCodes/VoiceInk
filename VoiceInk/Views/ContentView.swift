@@ -89,7 +89,7 @@ struct ContentView: View {
                         Text("VoiceInk")
                             .font(.system(size: 14, weight: .semibold))
 
-                        Text("PRO")
+                        Text("JC")
                             .font(.system(size: 9, weight: .heavy))
                             .foregroundStyle(.white)
                             .padding(.horizontal, 4)

@@ -44,6 +44,22 @@ setup: whisper
 build: setup
 	xcodebuild -project VoiceInk.xcodeproj -scheme VoiceInk -configuration Debug CODE_SIGN_IDENTITY="" build
 
+# Release Workflow
+release-build: setup
+	./scripts/build-fork.sh
+
+release-push:
+	chmod +x ./scripts/push-release.sh
+	./scripts/push-release.sh
+
+release-tap:
+	chmod +x ./scripts/update-tap.sh
+	./scripts/update-tap.sh
+
+# Full Release
+release: release-build release-push release-tap
+
+
 # Run application
 run:
 	@echo "Looking for VoiceInk.app..."
@@ -69,6 +85,7 @@ help:
 	@echo "  whisper            Clone and build whisper.cpp XCFramework"
 	@echo "  setup              Copy whisper XCFramework to VoiceInk project"
 	@echo "  build              Build the VoiceInk Xcode project"
+	@echo "  release            Build the release version with custom fork suffix"
 	@echo "  run                Launch the built VoiceInk app"
 	@echo "  dev                Build and run the app (for development)"
 	@echo "  all                Run full build process (default)"
