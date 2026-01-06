@@ -14,16 +14,35 @@ FORK_BUILD_NUM=$(cat ".fork_version")
 BUILT_FORK_NUM=$((FORK_BUILD_NUM - 1))
 VERSION="$MARKETING_VERSION-JC.$BUILT_FORK_NUM"
 
-echo "Detected Version: $VERSION"
 
-if [ ! -f "$ZIP_PATH" ]; then
-    echo "Error: $ZIP_PATH not found."
+if [ -z "$VERSION" ]; then
+    echo "Error: VERSION is empty!"
     exit 1
 fi
 
-# Calculate Hash
-NEW_HASH=$(shasum -a 256 "$ZIP_PATH" | awk '{print $1}')
-echo "New Hash: $NEW_HASH"
+echo "Detected Version: $VERSION"
+# Detect App Name from Zip
+# zipinfo -1 lists file names only. We look for the top-level folder ending in .app/
+APP_NAME_IN_ZIP=$(zipinfo -1 "$ZIP_PATH" | grep -m 1 "\.app/$" | sed 's/\/$//')
+
+if [ -z "$APP_NAME_IN_ZIP" ]; then
+    echo "Error: Could not detect .app name in zip"
+    exit 1
+fi
+
+echo "Detected App Name: $APP_NAME_IN_ZIP"
+
+if [ -z "$APP_NAME_IN_ZIP" ]; then
+    # Fallback to grep without / at end if unzip format is different
+     APP_NAME_IN_ZIP=$(unzip -l "$ZIP_PATH" | grep -o "[^ ]*\.app/" | head -n 1 | sed 's/\/$//')
+fi
+
+if [ -z "$APP_NAME_IN_ZIP" ]; then
+    echo "Error: Could not detect .app name in zip"
+    exit 1
+fi
+
+echo "Detected App Name: $APP_NAME_IN_ZIP"
 
 # Clone/Pull Tap
 if [ ! -d "$TAP_DIR" ]; then
@@ -54,7 +73,7 @@ cask "voiceink" do
   auto_updates true
   depends_on macos: ">= :sonoma"
 
-  app "VoiceInk JC.app"
+  app "$APP_NAME_IN_ZIP"
 
   zap trash: [
     "~/Library/Application Support/VoiceInk",

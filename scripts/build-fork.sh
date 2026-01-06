@@ -53,19 +53,23 @@ xcodebuild -project VoiceInk.xcodeproj \
 
 # Package into ZIP for distribution (Homebrew/Sparkle)
 echo "Packaging into ZIP..."
-APP_SOURCE="$EXPORT_PATH/VoiceInk.xcarchive/Products/Applications/VoiceInk.app"
-APP_DEST="$EXPORT_PATH/VoiceInk.xcarchive/Products/Applications/VoiceInk JC.app"
+# Package into ZIP for distribution (Homebrew/Sparkle)
+echo "Packaging into ZIP..."
+APPS_DIR="$EXPORT_PATH/VoiceInk.xcarchive/Products/Applications"
+# Find the .app inside the directory (there should only be one)
+APP_PATH=$(find "$APPS_DIR" -maxdepth 1 -name "*.app" | head -n 1)
+
 ZIP_PATH="$EXPORT_PATH/VoiceInk.zip"
 
-if [ -d "$APP_SOURCE" ]; then
-    # Rename app bundle to VoiceInk JC.app
-    mv "$APP_SOURCE" "$APP_DEST"
+if [ -d "$APP_PATH" ]; then
+    APP_NAME=$(basename "$APP_PATH")
+    echo "Found App: $APP_NAME"
     
-    # -c: create, -k: PKZip, --keepParent: include VoiceInk JC.app folder in zip
-    ditto -c -k --keepParent "$APP_DEST" "$ZIP_PATH"
+    # -c: create, -k: PKZip, --keepParent: include *.app folder in zip
+    ditto -c -k --keepParent "$APP_PATH" "$ZIP_PATH"
     echo "Created Release Artifact: $ZIP_PATH"
 else
-    echo "Error: App not found at $APP_SOURCE"
+    echo "Error: No App found in $APPS_DIR"
     exit 1
 fi
 

@@ -62,13 +62,13 @@ release: release-build release-push release-tap
 
 # Run application
 run:
-	@echo "Looking for VoiceInk.app..."
-	@APP_PATH=$$(find "$$HOME/Library/Developer/Xcode/DerivedData" -name "VoiceInk.app" -type d | head -1) && \
-	if [ -n "$$APP_PATH" ]; then \
+	@echo "Looking for built app..."
+	@APP_PATH=$$(xcodebuild -project VoiceInk.xcodeproj -scheme VoiceInk -showBuildSettings | grep "CODESIGNING_FOLDER_PATH" | sed 's/.*= //') && \
+	if [ -n "$$APP_PATH" ] && [ -d "$$APP_PATH" ]; then \
 		echo "Found app at: $$APP_PATH"; \
 		open "$$APP_PATH"; \
 	else \
-		echo "VoiceInk.app not found. Please run 'make build' first."; \
+		echo "App not found at $$APP_PATH. Please run 'make build' first."; \
 		exit 1; \
 	fi
 

@@ -1,9 +1,13 @@
 // Shared Configuration
 // APP_ORG_PREFIX must be defined in Local.xcconfig
 // APP_DEVELOPMENT_TEAM must be defined in Local.xcconfig
-DEVELOPMENT_TEAM = $(APP_DEVELOPMENT_TEAM)
-PRODUCT_BUNDLE_IDENTIFIER = $(APP_ORG_PREFIX).VoiceInk
-PRODUCT_NAME = VoiceInk JC
+
+
+// Defaults
+APP_PRODUCT_NAME = VoiceInk JC
 
 // Include optional local config
 #include? "Local.xcconfig"
+DEVELOPMENT_TEAM = $(APP_DEVELOPMENT_TEAM)
+PRODUCT_BUNDLE_IDENTIFIER = $(APP_ORG_PREFIX).VoiceInk
+PRODUCT_NAME = $(APP_PRODUCT_NAME)
